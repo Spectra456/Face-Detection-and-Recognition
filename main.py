@@ -36,7 +36,6 @@ def show_frame():
 	start = time.time()
 
 	global counter
-	counter+=1
 
 	global counterFrame
 	counterFrame += 1
@@ -61,16 +60,7 @@ def show_frame():
 	face_features_array = []
 	face_emotions_array = []
 
-	for i, d in enumerate(detected):
-		x1, y1, x2, y2 = d[3], d[0], d[1], d[2]
-		cv2.rectangle(frame_capture, (x1, y1), (x2, y2), (255, 0, 0), 2)
-		face_locations.append([y1, x2, y2, x1])
-
-		face_names.append(face_recognition.predict(face_encodings[i]))
-		face_features_array.append(face_features.check_prediction(face_features_data.loc[i]))
-		face_emotions_array.append(face_emotions.predict(frame_gray, detected[i]))
-	
-	if counterFrame % 24 == 0:
+	if counterFrame % 48 == 0:
 		flag_scroll = True
 
 		counterFrame = 0
@@ -81,12 +71,19 @@ def show_frame():
 		canvas.yview_scroll(3, "units")
 		counterSkip = 0
 
-	# draw results
 	for i, d in enumerate(detected):
-		cv2.rectangle(frame_capture, (face_locations[i][3], face_locations[i][0]), (face_locations[i][1], face_locations[i][2]), (0, 255, 0), 2)
-
+		x1, y1, x2, y2 = d[3], d[0], d[1], d[2]
+		cv2.rectangle(frame_capture, (x1, y1), (x2, y2), (0, 255, 0), 2)
+		face_locations.append([y1, x2, y2, x1])
 		if flag_scroll == True:
-			
+			face_names.append(face_recognition.predict(face_encodings[i]))
+			face_features_array.append(face_features.check_prediction(face_features_data.loc[i]))
+			face_emotions_array.append(face_emotions.predict(frame_gray, detected[i]))
+
+	# draw results
+	if flag_scroll == True:
+		for i, d in enumerate(detected):
+
 			face_cropped = Image.fromarray(faceViewImage[face_locations[i][0]:face_locations[i][2], face_locations[i][3]:face_locations[i][1]]).resize((128, 128))
 			face_cropped_tk = ImageTk.PhotoImage(image=face_cropped)
 			
@@ -96,7 +93,7 @@ def show_frame():
 			log_frame.grid(row=counter, column=0)
 			
 			Label(frame, width=30, text='Name: {} \nGender: {} \nAge: {}\nRace: {}\nGlass:{}\n Emotion:{} '.format(face_names[i],face_features_array[i][2],face_features_array[i][0],face_features_array[i][1],face_features_array[i][3],face_emotions_array[i])).grid(row=counter, column=1)
-			
+			counter+=1
 			
 	cv2image = change_color_dimension(frame_capture)
 
