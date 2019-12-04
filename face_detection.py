@@ -478,16 +478,16 @@ def create_grids(self, img_size=416, ng=(13, 13), device='cpu', type=torch.float
     self.nx = nx
     self.ny = ny
 # =====================================================================================================================================================
-class Yolo(object):
+class Face_Detection(object):
 
-    def __init__(self, conf, thresh, half):
+    def __init__(self, conf, thresh, half, model_path='models/last.pt', model_cfg='models/yolov3.cfg',model_classes ='models/coco.names'):
         self.img_size = 416  # (320, 192) or (416, 256) or (608, 352) for (height, width)
-        weights, self.half = 'face_only/last.pt', half
+        weights, self.half = model_path, half
         self.conf_threshold, self.nms_threshold = conf, thresh
         self.device = select_device('', self.half)
 
         # Initialize model
-        self.model = Darknet('face_only/yolov3.cfg', self.img_size)
+        self.model = Darknet(model_cfg, self.img_size)
 
         # Load weights
         if weights.endswith('.pt'):  # pytorch format
@@ -502,8 +502,8 @@ class Yolo(object):
         if self.half and self.device.type != 'cpu':
             self.model.half()
 
-        # Get classes and colors
-        self.classes = load_classes('face_only/coco.names')
+        # Get classes
+        self.classes = load_classes(model_classes)
 
 
     def process_image(self, img0, img_size, half):
@@ -594,9 +594,3 @@ class Yolo(object):
                     #print('Done. (%.3fs)' % (time.time() - t), flush=True)
                     return boxes
             return []
-if __name__ == '__main__':
-    # Run inference
-    imag1e = cv2.imread('/home/spectra/Downloads/5a0c473a7101ad6279644e7c.jpeg')
-    yolo = Yolo(0.5,0.5, False)
-    while(True):
-          yolo.detect(imag1e)

@@ -2,7 +2,7 @@ from PIL import Image, ImageTk
 import os
 import warnings
 from random import randint
-from detect import Yolo
+from face_detection import Face_Detection
 from drawer import *
 from gui import *
 from video_capture import *
@@ -27,7 +27,7 @@ frame_window = get_frameWindow(main_window)
 # for face detection
 frame_handler = Frame_Handler('/home/spectra/Downloads/test_walk.MOV')
 
-yolo = Yolo(0.5,0.5, False)
+yolo = Face_Detection(0.5,0.5, False)
 face_recognition = Face_Recognition()
 face_features = Face_Features()
 face_emotions = Emotion_Recognition()
