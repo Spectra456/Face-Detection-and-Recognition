@@ -84,27 +84,15 @@ def show_frame():
 	if flag_scroll == True:
 		for i, d in enumerate(detected):
 
-			face_cropped = Image.fromarray(faceViewImage[face_locations[i][0]:face_locations[i][2], face_locations[i][3]:face_locations[i][1]]).resize((128, 128))
-			face_cropped_tk = ImageTk.PhotoImage(image=face_cropped)
-			
-			log_frame=Label(frame, image=face_cropped_tk)
-			log_frame.imgtk = face_cropped_tk
-			log_frame.configure(image=face_cropped_tk)
-			log_frame.grid(row=counter, column=0)
-			
-			Label(frame, width=30, text='Name: {} \nGender: {} \nAge: {}\nRace: {}\nGlass:{}\n Emotion:{} '.format(face_names[i],face_features_array[i][2],face_features_array[i][0],face_features_array[i][1],face_features_array[i][3],face_emotions_array[i])).grid(row=counter, column=1)
+			log_frame = add_face(frame, counter, faceViewImage, face_locations[i])
+			add_meta(frame, face_names[i], face_features_array[i], face_emotions_array[i], counter)
 			counter+=1
 			
-	cv2image = change_color_dimension(frame_capture)
-
-	img = Image.fromarray(cv2image).resize((1080, 720))
-	img_tk = ImageTk.PhotoImage(image=img)
-	frame_window.configure(image=img_tk)
-	frame_window.imgtk = img_tk
+	frame_window1 = add_frame(frame_window, frame_capture)
 
 	print('Done. (%.3fs)' % (time.time() - start), flush=True)
 
-	frame_window.after(1, show_frame)
+	frame_window1.after(1, show_frame)
 
 show_frame()  #Display
 main_window.mainloop()  #Starts GUI
