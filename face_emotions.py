@@ -12,6 +12,9 @@ class Emotion_Recognition:
 		self.emotion_offsets = (20, 40)
 
 	def predict(self, gray, face_location):
+		'''
+		Predict emotion of face
+		'''
 		try:
 			x1, x2, y1, y2 = apply_offsets(face_location, self.emotion_offsets)
 			gray_face = gray[y1:y2, x1:x2]
@@ -26,15 +29,20 @@ class Emotion_Recognition:
 
 		except:
 			
-			return 'Unknown'		
-
+			return 'Unknown'
 
 def apply_offsets(rectangle, offsets):
+	'''
+	Converting face image to input format of cnn
+	'''
 	x, y, width, height = rectangle[3], rectangle[0], rectangle[1], rectangle[2]
 	x_off, y_off = offsets
 	return (x - x_off, x + width + x_off, y - y_off, y + height + y_off)
 
 def preprocess_input(x, v2=True):
+	'''
+	Normalize input
+	'''
 	x = x.astype('float32')
 	x = x / 255.0
 	if v2:

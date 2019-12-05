@@ -15,11 +15,16 @@ class Face_Recognition:
 		del faceDatabase
 
 	def get_encodings(self, frame, face_locations):
+		"""
+		Get face encodings from dlib
+		"""
 		face_encodings = face_recognition.face_encodings(frame, face_locations)
 		return face_encodings
 
 	def predict(self, face_encodings):
-
+		"""
+		Comparing face with anothers in DB with KNN(Kdtree)
+		"""
 		name = self.knn_clf.predict([face_encodings])
 		buffer = []
 		for j in range(len(self.names)):

@@ -1,6 +1,7 @@
 import pandas as pd
 import pickle
 import numpy as np
+
 class Face_Features:
 	def __init__(self, model_path='models/face_model.pkl'):
 		with open(model_path, 'rb') as f:
@@ -8,7 +9,9 @@ class Face_Features:
 			self.columns = ['Male', 'Asian', 'White', 'Black','Indian','0-5','10-15','20-35','45-65','65+','No Eyewear']
 
 	def predict(self, faces_encodings):
-		
+		"""
+		Making prediction based on face encodings with simple MLPClassifier
+		"""
 		if faces_encodings != []:
 			predict = pd.DataFrame(self.clf.predict_proba(faces_encodings), columns = self.labels)
 			prediction = predict.loc[:, self.columns]
@@ -17,6 +20,9 @@ class Face_Features:
 			return None
 
 	def check_prediction(self, prediction):
+		"""
+		Compare prediction with our requirments
+		"""
 		if prediction is not None:
 			if round(prediction['Male'], 2) > 0.7:
 				gender = 'M'
