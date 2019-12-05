@@ -2,6 +2,8 @@ from sklearn import neighbors
 import face_recognition
 import os
 import pickle
+import cv2
+from face_detection import Face_Detection
 
 #The training data would be all the face encodings from all the known images and the labels are their names
 encodings = []
@@ -9,6 +11,8 @@ names = []
 
 # Training directory
 train_dir = os.listdir('train_dir/')
+# Init face detector
+yolo = Face_Detection(0.5,0.5, False)
 
 # Loop through each person in the training directory
 for person in train_dir:
@@ -18,8 +22,9 @@ for person in train_dir:
     for person_img in pix:
         # Get the face encodings for the face in each image file
         print(person_img)
-        face = face_recognition.load_image_file("train_dir/" + person + "/" + person_img)
-        face_bounding_boxes = face_recognition.face_locations(face, model="cnn")
+        face = cv2.imread("train_dir/" + person + "/" + person_img)
+        face_bounding_boxes = detected = yolo.detect(face)
+        print(face_bounding_boxes)
 
         #If training image contains none or more than faces, print an error message and exit
         if len(face_bounding_boxes) != 1:

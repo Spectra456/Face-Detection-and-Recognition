@@ -36,7 +36,7 @@ def select_device(device='', apex=False):
     if device and not cpu_request:  # if device requested other than 'cpu'
         os.environ['CUDA_VISIBLE_DEVICES'] = device  # set environment variable
         assert torch.cuda.is_available(), 'CUDA unavailable, invalid device %s requested' % device  # check availablity
-        print(torch.cuda.is_available(), flush=True)
+        print(torch.cuda.is_available())
     cuda = False if cpu_request else torch.cuda.is_available()
     if cuda:
         c = 1024 ** 2  # bytes to MB
@@ -494,7 +494,7 @@ class Face_Detection(object):
             self.model.load_state_dict(torch.load(weights, map_location=self.device)['model'])
 
         # Eval mode
-        print('-------------------------------------',self.device, flush=True)
+        print('-------------------------------------',self.device)
         self.model.to(self.device).eval()
 
 

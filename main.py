@@ -26,10 +26,10 @@ canvas, frame = get_logScrollbar()
 frame_window = get_frameWindow(main_window)
 
 # Init frame handler for capture frames from sources
-frame_handler = Frame_Handler(0)
+frame_handler = Frame_Handler('/home/spectra/Downloads/test_walk.MOV')
 
 # Init face detector
-yolo = Face_Detection(0.5,0.5, False)
+yolo = Face_Detection(0.7,0.7, False)
 # Init face recognition
 face_recognition = Face_Recognition()
 # Init face features recognition
@@ -53,7 +53,7 @@ def show_frame():
 
 	flag_scroll = False
 
-    # Get frame from source 
+	# Get frame from source 
 	frame_capture = frame_handler.get_frame()
 	# BGR to RGB
 	faceViewImage = change_color_dimension(frame_capture)
@@ -108,7 +108,7 @@ def show_frame():
 			
 	frame_window1 = add_frame(frame_window, frame_capture)
 
-	print('Done. (%.3fs)' % (time.time() - start), flush=True)
+	print('Done. (%.3fs)' % (time.time() - start))
 
 	frame_window1.after(1, show_frame)
 
