@@ -25,7 +25,7 @@ canvas, frame = get_logScrollbar()
 frame_window = get_frameWindow(main_window)
 
 # for face detection
-frame_handler = Frame_Handler('/home/spectra/Downloads/test_walk.MOV')
+frame_handler = Frame_Handler(0)
 
 yolo = Face_Detection(0.5,0.5, False)
 face_recognition = Face_Recognition()
