@@ -8,7 +8,6 @@ class Frame_Handler:
 		self.height = int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT))  
 
 	def get_frame(self):
-
 		return self.capture.read()[1]
 
 def change_color_dimension(frame):
